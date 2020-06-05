@@ -11,7 +11,7 @@ data Personaje = UnPersonaje {
     planeta :: String
 } deriving (Show, Eq)
 
-type Gema = Personaje -> Personaje
+type Gema = Personaje -> Personaje 
 data Material = Uru | Hierro | Otro deriving (Show, Eq)
 type Universo = [Personaje]
 
@@ -19,7 +19,7 @@ data Guante = UnGuante {
     material :: Material,
     cantidadGemas :: Int,
     gemas :: [Gema]
-} deriving (Show, Eq)
+}
 
 
 chasquidoUniverso :: Guante -> Universo -> Universo
@@ -37,7 +37,7 @@ mitadUniverso  = (`div` 2).length
 --Saber si un universo es apto para péndex, que ocurre si alguno de los personajes que lo integran tienen menos de 45 años.
 
 aptoParaPendex :: Universo -> Bool 
-aptoParaPendex universo = any (( < 45 ).edad) universo
+aptoParaPendex  universo = any (( < 45 ).edad) universo 
 
 --Saber la energía total de un universo que es la sumatoria de todas las energías de sus integrantes que tienen más de una habilidad.
 
@@ -115,7 +115,7 @@ nuevaEdad :: Gema
 nuevaEdad personaje = personaje {edad = cambiarEdad personaje}
 
 cambiarEdad :: Personaje -> Int
-cambiarEdad   = max 18 (`div` 2).edad 
+cambiarEdad   = max 18. (`div` 2).edad 
 
 --6) La gema loca que permite manipular el poder de una gema y la ejecuta 2 veces contra un rival.
  
@@ -141,10 +141,15 @@ aplicarGema :: Personaje -> Gema -> Personaje
 aplicarGema personaje gema  = gema personaje
 
 {-Punto 6: (2 puntos). Resolver utilizando recursividad. Definir la función gemaMasPoderosa que dado un 
-guantelete y una persona obtiene la gema del infinito que produce la pérdida más grande de energía sobre la víctima. 
+guantelete y una persona obtiene la gema del infinito que produce la pérdida más grande de energía sobre la víctima. -}
+
+{-gemaMasPoderosa :: Guante -> Personaje -> Gema
+gemaMasPoderosa 
+ | energia (gema1 personaje) < energia (gema2 personaje ) = -}
 
 
-Punto 7: (1 punto) Dada la función generadora de gemas y un guantelete de locos:
+--PUNTO 7 respondido
+{-Punto 7: (1 punto) Dada la función generadora de gemas y un guantelete de locos:
 infinitasGemas :: Gema -> [Gema]
 infinitasGemas gema = gema:(infinitasGemas gema)
 
@@ -157,5 +162,11 @@ usoLasTresPrimerasGemas guantelete = (utilizar . take 3. gemas) guantelete
 
 Justifique si se puede ejecutar, relacionándolo con conceptos vistos en la cursada:
 gemaMasPoderosa punisher guanteleteDeLocos
+No se puede ejecutar porque la gemaMasPoderosa necesita ver todos los elementos de la lista antes de poder arrojar 
+un resultado (Eager evaluation), y como guanteLete tiene infinitas gemas nunca llegará a ese resultado
+
 usoLasTresPrimerasGemas guanteleteDeLocos punisher
+Esta sí se puede implementar gracias a lazy evaluation ya que, aunque gemas devuelva una lista infinita, take 3 no necesita 
+conocer toda la lista para tomar los primeros 3. Por lo tanto aplica las 3 primeras gemas al personajesMasDeUnaHabilidad
+
 -}
